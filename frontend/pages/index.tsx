@@ -29,17 +29,17 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-indigo-900 to-slate-900">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white py-32">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">My Virtual Check In</h1>
-          <p className="text-2xl mb-8">Discover, Manage & Check In to Events</p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/events" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100">
-              Browse Events
+          <h1 className="text-6xl font-black mb-6 tracking-tight">Virtual Check In</h1>
+          <p className="text-2xl mb-10 opacity-90">The Modern Way to Discover & Manage Events</p>
+          <div className="flex gap-6 justify-center">
+            <Link href="/events" className="bg-white text-indigo-600 px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg">
+              Explore Events
             </Link>
-            <Link href="/auth/register" className="bg-blue-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-400">
+            <Link href="/auth/register" className="bg-pink-500 text-white px-10 py-4 rounded-xl font-bold hover:bg-pink-600 transition shadow-lg">
               Get Started
             </Link>
           </div>
@@ -47,7 +47,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16">
+      <section className="py-24 bg-slate-800">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Core Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
