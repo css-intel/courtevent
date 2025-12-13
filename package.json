@@ -1,0 +1,22 @@
+{
+  "name": "virtual-checkin-platform",
+  "version": "1.0.0",
+  "description": "My Virtual Check In - Complete Event Management Platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w frontend\" \"npm run dev -w backend\"",
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "start": "npm start -w backend",
+    "frontend:build": "npm run build -w frontend",
+    "frontend:dev": "npm run dev -w frontend",
+    "backend:build": "npm run build -w backend",
+    "backend:dev": "npm run dev -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
