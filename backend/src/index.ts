@@ -17,6 +17,16 @@ dotenv.config()
 const app: Express = express()
 const PORT = process.env.PORT || 5000
 
+// Validate environment variables
+const SUPABASE_URL = process.env.SUPABASE_URL
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('Missing required environment variables:')
+  console.error('SUPABASE_URL:', SUPABASE_URL ? '✓' : '✗')
+  console.error('SUPABASE_SERVICE_ROLE_KEY:', SUPABASE_SERVICE_ROLE_KEY ? '✓' : '✗')
+}
+
 // Middleware
 app.use(helmet())
 app.use(cors())
@@ -26,8 +36,8 @@ app.use(express.urlencoded({ extended: true }))
 
 // Supabase Client
 export const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  SUPABASE_URL || '',
+  SUPABASE_SERVICE_ROLE_KEY || ''
 )
 
 // Routes
@@ -51,5 +61,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+  console.log(`✓ Server running on port ${PORT}`)
+  console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`)
+  console.log(`✓ Supabase: ${SUPABASE_URL ? '✓ Connected' : '✗ Missing URL'}`)
 })
