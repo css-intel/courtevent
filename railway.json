@@ -1,0 +1,10 @@
+{
+  "service": {
+    "name": "courtevent-backend",
+    "buildCommand": "cd backend && npm ci && npm run build",
+    "startCommand": "node backend/dist/index.js",
+    "environmentVariables": {
+      "NODE_ENV": "production"
+    }
+  }
+}
