@@ -1,4 +1,3 @@
-import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

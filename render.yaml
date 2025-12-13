@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    buildCommand: "cd backend && npm ci && npm run build"
+    startCommand: "cd backend && npm start"
+    envs:
+      - key: "NODE_ENV"
+        value: "production"
+      - key: "SUPABASE_URL"
+        value: "https://lgjozpcbthcprhcnvdyn.supabase.co"
+      - key: "SUPABASE_SERVICE_ROLE_KEY"
+        value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxnam96cGNidGhjcHJoY252ZHluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDI5OTUsImV4cCI6MjA4MTIxODk5NX0.l5CkmwLNAQncYa7CycfyWpk08IEO-Fkc9FbDGDDbAHY"
