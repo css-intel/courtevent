@@ -141,7 +141,7 @@ export default function Dashboard() {
   )
 }
 
-function CreateEventForm({ onSuccess }) {
+function CreateEventForm({ onSuccess }: { onSuccess: () => void }) {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
@@ -153,7 +153,7 @@ function CreateEventForm({ onSuccess }) {
     capacity: '',
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -161,7 +161,7 @@ function CreateEventForm({ onSuccess }) {
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       setLoading(true)
@@ -208,7 +208,7 @@ function CreateEventForm({ onSuccess }) {
           value={formData.description}
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg"
-          rows="4"
+          rows={4}
           required
         />
       </div>
