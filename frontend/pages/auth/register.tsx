@@ -43,13 +43,6 @@ export default function Register() {
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-          data: {
-            full_name: formData.fullName,
-            user_type: userType,
-          }
-        }
       })
 
       if (signupError) {
@@ -69,15 +62,27 @@ export default function Register() {
 
         if (profileError) {
           console.warn('Profile creation warning:', profileError)
-          // Don't throw - profile might already exist
         }
       }
 
-      setSuccess('Registration successful! Check your email to verify your account.')
-      setTimeout(() => {
-        router.push('/auth/login')
-          {success && <div className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">{success}</div>}
-      }, 2000)
+      setSuccess('Account created successfully! Logging you in...')
+      
+      // Auto-login after signup
+      const { error: loginError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (loginError) {
+        console.warn('Auto-login warning:', loginError)
+        setTimeout(() => {
+          router.push('/auth/login')
+        }, 1500)
+      } else {
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1500)
+      }
     } catch (error: any) {
       console.error('Sign up error:', error)
       setError(error.message || 'Registration failed')
@@ -96,6 +101,7 @@ export default function Register() {
 
         <form onSubmit={handleSubmit}>
           {error && <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">{error}</div>}
+          {success && <div className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">{success}</div>}
 
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">I am a:</label>
