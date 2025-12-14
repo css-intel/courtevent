@@ -32,9 +32,8 @@ export default function Login() {
 
       if (loginError) throw loginError
 
-      alert('Login successful!')
       router.push('/dashboard')
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message || 'Login failed')
     } finally {
       setLoading(false)

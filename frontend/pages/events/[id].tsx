@@ -5,10 +5,11 @@ import { supabase } from '@/lib/supabase'
 export default function EventDetail() {
   const router = useRouter()
   const { id } = router.query
-  const [event, setEvent] = useState(null)
+  const [event, setEvent] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<any>(null)
   const [registering, setRegistering] = useState(false)
+  const [registered, setRegistered] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -43,20 +44,25 @@ export default function EventDetail() {
 
     try {
       setRegistering(true)
-      const { data, error } = await supabase.from('registrations').insert([
+      const { data, error } = await supabase.from('tickets').insert([
         {
           event_id: id,
           user_id: user.id,
-          registered_at: new Date().toISOString(),
-          status: 'registered',
+          ticket_code: `TKT-${Date.now().toString(36).toUpperCase()}`,
+          status: 'active',
+          created_at: new Date().toISOString(),
         },
       ])
 
       if (error) throw error
-      alert('Successfully registered for the event!')
-    } catch (error) {
+      setRegistered(true)
+    } catch (error: any) {
       console.error('Error registering:', error)
-      alert('Failed to register. Please try again.')
+      if (error.message?.includes('duplicate')) {
+        setRegistered(true)
+      } else {
+        alert('Failed to register: ' + error.message)
+      }
     } finally {
       setRegistering(false)
     }
@@ -125,10 +131,14 @@ export default function EventDetail() {
 
             <button
               onClick={handleRegister}
-              disabled={registering}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-blue-700 disabled:bg-gray-400"
+              disabled={registering || registered}
+              className={`w-full py-3 rounded-lg font-bold text-lg transition ${
+                registered 
+                  ? 'bg-green-600 text-white cursor-default'
+                  : 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400'
+              }`}
             >
-              {registering ? 'Registering...' : user ? 'Register for Event' : 'Login to Register'}
+              {registered ? '✓ Registered!' : registering ? 'Registering...' : user ? 'Register for Event' : 'Login to Register'}
             </button>
           </div>
         </div>

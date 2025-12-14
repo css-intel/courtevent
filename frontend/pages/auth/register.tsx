@@ -150,9 +150,11 @@ export default function Register() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="your@email.com"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+            <p className="text-xs text-gray-500 mt-1">Use a valid email (gmail.com, outlook.com, etc.)</p>
           </div>
 
           <div className="mb-4">

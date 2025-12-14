@@ -5,9 +5,9 @@ import { supabase } from '@/lib/supabase'
 
 export default function Dashboard() {
   const router = useRouter()
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState<any[]>([])
   const [view, setView] = useState('my-events')
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function Dashboard() {
     fetchUserEvents(data.session.user.id)
   }
 
-  const fetchUserEvents = async (userId) => {
+  const fetchUserEvents = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('events')
@@ -114,8 +114,17 @@ export default function Dashboard() {
                       <Link href={`/events/${event.id}`} className="bg-blue-600 text-white px-4 py-2 rounded">
                         View Event
                       </Link>
-                      <button className="bg-gray-300 px-4 py-2 rounded">Edit</button>
-                      <button className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                      <button 
+                        onClick={async () => {
+                          if (confirm('Are you sure you want to delete this event?')) {
+                            await supabase.from('events').delete().eq('id', event.id)
+                            fetchUserEvents(user.id)
+                          }
+                        }}
+                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -127,7 +136,7 @@ export default function Dashboard() {
         )}
 
         {/* Create Event View */}
-        {view === 'create-event' && <CreateEventForm onSuccess={() => setView('my-events')} />}
+        {view === 'create-event' && <CreateEventForm onSuccess={() => { fetchUserEvents(user?.id); setView('my-events'); }} />}
 
         {/* Analytics View */}
         {view === 'analytics' && (
@@ -178,7 +187,7 @@ function CreateEventForm({ onSuccess }: { onSuccess: () => void }) {
       if (error) throw error
       alert('Event created successfully!')
       onSuccess()
-    } catch (error) {
+    } catch (error: any) {
       alert('Error creating event: ' + error.message)
     } finally {
       setLoading(false)
