@@ -34,7 +34,11 @@ export default function Login() {
 
       router.push('/dashboard')
     } catch (error: any) {
-      setError(error.message || 'Login failed')
+      if (error.message?.includes('Invalid login credentials')) {
+        setError('Invalid email or password. If you just signed up, please check your email to confirm your account first.')
+      } else {
+        setError(error.message || 'Login failed')
+      }
     } finally {
       setLoading(false)
     }

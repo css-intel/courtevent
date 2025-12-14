@@ -74,10 +74,11 @@ export default function Register() {
       })
 
       if (loginError) {
-        console.warn('Auto-login warning:', loginError)
+        // Email confirmation is likely required
+        setSuccess('Account created! Please check your email to confirm, then log in.')
         setTimeout(() => {
           router.push('/auth/login')
-        }, 1500)
+        }, 3000)
       } else {
         setTimeout(() => {
           router.push('/dashboard')
