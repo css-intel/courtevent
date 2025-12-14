@@ -1,11 +1,12 @@
 [build]
-command = "npm run frontend:build"
+command = "cd frontend && npm run build"
 publish = "frontend/.next"
 
 [build.environment]
 NODE_VERSION = "18"
-NEXT_PUBLIC_SUPABASE_URL = ""
-NEXT_PUBLIC_SUPABASE_ANON_KEY = ""
+NEXT_PUBLIC_SUPABASE_URL = "https://lgjozpcbthcprhcnvdyn.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_d8r2vdKi9Z8OFqq6s-AeQw_ao6fka4k"
+NEXT_PUBLIC_API_URL = "http://localhost:8080/api"
 
 [[redirects]]
 from = "/api/*"
