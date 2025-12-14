@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import '@/styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
