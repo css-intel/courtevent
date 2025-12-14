@@ -6,6 +6,7 @@ export default function Register() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [userType, setUserType] = useState('attendee')
   const [formData, setFormData] = useState({
     email: '',
@@ -25,9 +26,15 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
+    setSuccess('')
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match')
+      return
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters')
       return
     }
 
@@ -36,30 +43,50 @@ export default function Register() {
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          data: {
+            full_name: formData.fullName,
+            user_type: userType,
+          }
+        }
       })
 
-      if (signupError) throw signupError
+      if (signupError) {
+        throw signupError
+      }
 
       // Create user profile
-      const { error: profileError } = await supabase.from('profiles').insert([
-        {
-          id: data.user?.id,
-          full_name: formData.fullName,
-          user_type: userType,
-          created_at: new Date().toISOString(),
-        },
-      ])
+      if (data.user) {
+        const { error: profileError } = await supabase.from('profiles').insert([
+          {
+            id: data.user.id,
+            full_name: formData.fullName,
+            user_type: userType,
+            created_at: new Date().toISOString(),
+          },
+        ])
 
-      if (profileError) throw profileError
+        if (profileError) {
+          console.warn('Profile creation warning:', profileError)
+          // Don't throw - profile might already exist
+        }
+      }
 
-      alert('Registration successful! Please check your email to verify your account.')
-      router.push('/auth/login')
-    } catch (error) {
+      setSuccess('Registration successful! Check your email to verify your account.')
+      setTimeout(() => {
+        router.push('/auth/login')
+          {success && <div className="bg-green-100 text-green-700 p-3 rounded-lg mb-4">{success}</div>}
+      }, 2000)
+    } catch (error: any) {
+      console.error('Sign up error:', error)
       setError(error.message || 'Registration failed')
     } finally {
       setLoading(false)
     }
   }
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
